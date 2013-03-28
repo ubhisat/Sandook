@@ -1,10 +1,10 @@
 __author__ = 'satmeet'
 
-import pickle
 from sandook.model.tasklist import Tasklist
 from sandook.model.task import Task
 from os.path import basename
 import utils
+import datadb
 
 def get_logger():
     from sandook.app.sulog import SULog
@@ -19,7 +19,7 @@ class ModelLocal(object):
             else get_logger()
         try:
             with open(self.db_path, 'rb') as f:
-                self._d = utils.load(f)
+                self._d = datadb.load(f)
         except IOError as ioe:
             self.log("Exception " + str(ioe))
             self.init_dict()
@@ -112,7 +112,7 @@ class ModelLocal(object):
             self.log("Saving...")
             with open(self.db_path, 'wb') as f:
                 #pickle.dump(self._d, f)
-                utils.dump(self.to_json(), f)
+                datadb.dump(self.to_json(), f)
             self.log("Saved...")
             self.dirty = False
         else:
