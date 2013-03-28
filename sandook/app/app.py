@@ -131,7 +131,9 @@ class App(object):
 
     def update_footer(self, text):
         #This needs to be modified if footer structure is changed.
-        self.footer.original_widget.contents[0][0].original_widget.set_text(text)
+        ftext = text if len(text) < 30 else text[:27] + "..."
+        self.footer.original_widget.contents[0][0].original_widget.set_text(
+            ftext)
 
     def set_top(self, widget):
         self.top = urwid.Overlay(widget, urwid.SolidFill(' '),
