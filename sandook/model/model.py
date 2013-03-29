@@ -66,8 +66,9 @@ class ModelLocal(object):
             retd = [(new_task.id, new_task.title, new_task.position, new_task.completed)]
         return retd
 
-    def add_tasklist(self, title):
-        tlist = Tasklist(title=title)
+    def add_tasklist(self, title, tlist_id=None):
+        tlist = Tasklist(title=title, id=tlist_id) if tlist_id else \
+                Tasklist(title=title)
         self._d['tasklists'][tlist.id] = tlist
         self.add_task(tlist.id, title="")
         return tlist
