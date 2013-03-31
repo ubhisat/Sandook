@@ -58,10 +58,14 @@ header h1 {
 }
 
 header h1:before {
-  content: "./ ";
+  content: "";
   font-size: 24px;
 }
-
+header h1{
+    background:transparent url("../images/sandook-logo.png") 0 0 no-repeat;
+    padding: 16px 16px 25px 75px;
+    margin: 10px 10px 10px 10px;
+}
 header h2 {
   font-size: 18px;
   font-weight: 300;
