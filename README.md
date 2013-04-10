@@ -1,13 +1,14 @@
-# **Sandook**
+**Sandook**
 -------------------
 
 
 Sandook is a command line task management utility for linux based systems.
 It can be run under cygwin on windows.
 
-[Sandook.png](http://dl.dropbox.com/u/153809199/Sandook.png "Sandook Task Manager")
+![Sandook.png](http://dl.dropbox.com/u/153809199/Sandook.png "Sandook Task Manager")
 
-## Requirements
+
+Requirements
 ---------------
 
 Sandook requires
@@ -16,7 +17,7 @@ Sandook requires
 + urwid
 + dropbox (required for sync to work!)
 
-## Installation
+ Installation
 ----------------
 
 + extract the downloaded sandook-x.x.tar.gz or sandook-x.x.zip file
@@ -25,14 +26,14 @@ Sandook requires
 + Press ```ctrl+p``` to show a help dialog for a list of available commands
 
 
-## Configuration for sync with dropbox
+Configuration for sync with dropbox
 -----------------
 
 + Run ```sandook-config -h``` for a list of available commands.
 + This program requires user to provide the APP_KEY and APP_SECRET which can be acquired by registering an app at (for dropbox, currently supported) [https://www.dropbox.com/developers/apps](https://www.dropbox.com/developers/apps "Create App")
 + Please note that you will have to press ```Enter``` after authorizing the app on your web-browser (which should open automatically) to complete the configuration.
 
-## License
+License
 -----------
 
 Sandook is free software: you can redistribute it and/or modify
