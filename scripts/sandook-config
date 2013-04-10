@@ -1,0 +1,67 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+Sandook-Config allows you to use online services such as Dropbox to
+sync your tasks.
+"""
+__author__ = 'satmeet'
+__appname__ = "[application name]"
+__version__ = "0.1"
+
+from sandook.config.config import Config
+from dropbox import session
+from dropbox.rest import ErrorResponse
+from sandook.app.sulog import SULog
+import webbrowser
+import logging, argparse
+log = logging.getLogger(__name__)
+
+SUPPORTED_SERVICES = ['Dropbox']
+
+def get_help_service():
+    return "Specify the service to use for sync. Currently supports: %s" % ''.join(SUPPORTED_SERVICES)
+
+def save_access_token(config, access_key, access_secret, app_key, app_secret):
+    if not config.parser.has_section('sync'):
+        config.parser.add_section('sync')
+    config.parser.set('sync', 'key', access_key)
+    config.parser.set('sync', 'secret', access_secret)
+    config.parser.set('sync', 'app_key', app_key)
+    config.parser.set('sync', 'app_secret', app_secret)
+    config.save(overwrite=True)
+
+if __name__ == "__main__":
+    ACCESS_TYPE = 'app_folder'
+    config = Config()
+    sulog = SULog(config)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("-s", "--service", required=True, action="store", help=get_help_service())
+    parser.add_argument("-k", "--key", required=True, action="store", help="Specify the APP_KEY received after registering your app at the specified service.")
+    parser.add_argument("-t", "--secret", required=True, action="store", help="Specify the APP_SECRET received after registering your app at the specified service.")
+    #parser.add_argument("--version", action="version", version="%s %s by %s." % (__appname__, __version__, __author__))
+    args = parser.parse_args()
+
+    if args.service.lower() in [x.lower() for x in SUPPORTED_SERVICES]:
+        if args.service.lower() == 'dropbox':
+            try:
+                print "will fetch new token"
+                sess = session.DropboxSession(args.key, args.secret, ACCESS_TYPE)
+                request_token = sess.obtain_request_token()
+                url = sess.build_authorize_url(request_token)
+
+                print "url : ", url
+                webbrowser.open_new(url)
+                raw_input("Please Press 'Enter' here after allowing access to the app. ")
+
+                access_token = sess.obtain_access_token(request_token)
+                save_access_token(config, access_token.key, access_token.secret, args.key, args.secret)
+                print "Configuration successful!"
+                print "Please quit and start 'sandook' for changes to take effect"
+            except ErrorResponse as er:
+                print er
+                sulog.logw(er)
+            except Exception as e:
+                print "Exception occured: " + str(e)
+                sulog.logw(e)
+    else:
+        print "Cannot continue, '%s' service is not yet supported" % (args.service)
