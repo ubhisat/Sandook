@@ -30,26 +30,43 @@
       <section id="main_content">
         <h1><strong>Sandook</strong></h1>
 
-<hr><p>Sandook is a command line task management utility for linux systems written using wonderful library 'urwid'.
+        <hr>
+       <p>Sandook is a command line task management utility for linux based systems.
 It can be run under cygwin on windows.</p>
 
-<p><img src="http://dl.dropbox.com/u/153809199/Sandook.png" alt="Sandook.png" title="Sandook Task Manager"></p>
+<p><img src="http://dl.dropbox.com/u/153809199/Sandook.png" alt="Sandook.png" title="Sandook Task Manager" /></p>
 
-<h2>Requirements</h2>
+<h2 id="requirements">## Requirements</h2>
 
-<hr><p>Sandook requires</p>
+<p>Sandook requires</p>
 
 <ul>
 <li>python 2.7</li>
 <li>urwid</li>
-</ul><h2>Installation</h2>
+<li>dropbox (required for sync to work!)</li>
+</ul>
 
-<hr><ul>
-<li>extract the downloaded sandook-x.x.tar.gz file</li>
-<li>At the command prompt execute:  <code>python setup.py install</code>. Admin privileges may be needed as per user's setup.</li>
-<li>run <code>sandook</code>
-</li>
+<h2 id="installation">## Installation</h2>
+
+<ul>
+<li>extract the downloaded sandook-x.x.tar.gz or sandook-x.x.zip file</li>
+<li>At the command prompt execute:  <code>python setup.py install</code>. You may need admin privileges depending upon your setup.</li>
+<li>run <code>sandook</code></li>
 <li>Press <code>ctrl+p</code> to show a help dialog for a list of available commands</li>
+</ul>
+
+<h2 id="configuration-for-sync-with-dropbox">## Configuration for sync with dropbox</h2>
+
+<ul>
+<li>Run <code>sandook-config -h</code> for a list of available commands.</li>
+<li>This program requires user to provide the APP<em>KEY and APP</em>SECRET which can be acquired by registering an app at (for dropbox, currently supported) <a href="https://www.dropbox.com/developers/apps" title="Create App">https://www.dropbox.com/developers/apps</a></li>
+<li>Please note that you will have to press <code>Enter</code> after authorizing the app on your web-browser (which should open automatically) to complete the configuration.</li>
+</ul>
+ 
+       
+        
+        
+        
 </ul><h2>License</h2>
 
 <hr><p>Sandook is free software: you can redistribute it and/or modify
