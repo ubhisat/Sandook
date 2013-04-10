@@ -10,7 +10,7 @@ from sandook.app.sulog import SULog
 def main():
     config = Config()
     sulog = SULog(config)
-    appl = App(model=Model(config, sulog.logw),
+    appl = App(model=Model(config=config, log=sulog.logw),
                config=config,
                logw=sulog.logw)
     appl.main()

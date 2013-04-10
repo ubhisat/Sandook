@@ -10,14 +10,48 @@ def get_logger():
     from sandook.app.sulog import SULog
     return SULog().logw
 
+class DropboxModel(object):
+    def __init__(self, app_key, app_secret, access_key, access_secret, log=None):
+        from dropbox import client, session
+        ACCESS_TYPE = 'app_folder'
+        self.sess = session.DropboxSession(app_key, app_secret, ACCESS_TYPE)
+        self.sess.set_token(access_key, access_secret)
+        self.cl = client.DropboxClient(self.sess)
+        self.log = log
+
+    def load(self, db_file, db_path):
+        f, metadata = self.cl.get_file_and_metadata(db_file)
+        self.log(metadata)
+        out = open(db_path, 'w')
+        out.write(f.read())
+        out.close()
+        f.close()
+
+    def save(self, db_file, db_path):
+        f = open(db_path)
+        response = self.cl.put_file(db_file, f, overwrite=True)
+        self.log(response)
+        f.close()
+
 class ModelLocal(object):
-    def __init__(self, config=None, log=None):
+    def __init__(self, config=None, signal=None, log=None):
         self.dirty = False
+        self.signal = signal
+        self.config = config
         self.db_path = config.db_path if config \
             else '.sandookdb'
         self.log = lambda msg: log("%s : %s" % (basename(__file__), msg)) if log \
             else get_logger()
         try:
+            if self.config.sync_enabled():
+                access_key = self.config.parser.get('sync', 'key')
+                access_secret = self.config.parser.get('sync', 'secret')
+                app_key = self.config.parser.get('sync', 'app_key')
+                app_secret = self.config.parser.get('sync', 'app_secret')
+                self.log("%s %s %s %s" % (access_key, access_secret, app_key, app_secret))
+                self.dropb = DropboxModel(app_key, app_secret, access_key, access_secret, log=self.log)
+                self.dropb.load(self.config.db_file, self.db_path)
+
             with open(self.db_path, 'rb') as f:
                 self._d = datadb.load(f)
         except IOError as ioe:
@@ -114,6 +148,9 @@ class ModelLocal(object):
             with open(self.db_path, 'wb') as f:
                 #pickle.dump(self._d, f)
                 datadb.dump(self.to_json(), f)
+            # Remote sync
+            if self.config.sync_enabled() and self.dropb:
+                self.dropb.save(self.config.db_file, self.db_path)
             self.log("Saved...")
             self.dirty = False
         else:

@@ -14,14 +14,23 @@ Sandook requires
 
 + python 2.7
 + urwid
++ dropbox (required for sync to work!)
 
 ## Installation
 ----------------
 
-+ extract the downloaded sandook-x.x.tar.gz file
-+ At the command prompt execute:  ```python setup.py install  ```
++ extract the downloaded sandook-x.x.tar.gz or sandook-x.x.zip file
++ At the command prompt execute:  ```python setup.py install  ```. You may need admin privileges depending upon your setup.
 + run ```sandook```
 + Press ```ctrl+p``` to show a help dialog for a list of available commands
+
+
+## Configuration for sync with dropbox
+-----------------
+
++ Run ```sandook-config -h``` for a list of available commands.
++ This program requires user to provide the APP_KEY and APP_SECRET which can be acquired by registering an app at (for dropbox, currently supported) [https://www.dropbox.com/developers/apps](https://www.dropbox.com/developers/apps "Create App")
++ Please note that you will have to press ```Enter``` after authorizing the app on your web-browser (which should open automatically) to complete the configuration.
 
 ## License
 -----------

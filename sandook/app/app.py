@@ -119,7 +119,8 @@ class App(object):
         )
 
     def build_footer(self, help_text):
-        self.footer = urwid.AttrMap(urwid.Columns([
+        self.footer = urwid.AttrMap(
+                        urwid.Columns([
                              urwid.Padding(urwid.Text(u"Status"), width=('relative', 70), align="left"),
                              urwid.Padding(urwid.Text(u"For Commands, press : %s  " % help_text), width='pack',
                                            min_width=len(help_text) + 24, align="right")],
@@ -129,11 +130,14 @@ class App(object):
         #This needs to be modified if footer structure is changed.
         self.header.original_widget.contents[0][0].set_text(text)
 
-    def update_footer(self, text):
+    def update_footer(self, text, trim=True):
         #This needs to be modified if footer structure is changed.
-        ftext = text if len(text) < 30 else text[:27] + "..."
+        ftext = text[:25]+ "..." if (len(text) > 28 and trim) else text
         self.footer.original_widget.contents[0][0].original_widget.set_text(
             ftext)
+        if not trim:
+            #Indicates an error has occured.
+            self.footer.set_attr_map({None: 'error'})
 
     def set_top(self, widget):
         self.top = urwid.Overlay(widget, urwid.SolidFill(' '),

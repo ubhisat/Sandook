@@ -36,7 +36,7 @@ class Config(object):
         self.parser = SafeConfigParser()
         self.read()
 
-    def read(self):
+    def read(self, save=True):
         self.parser.read(self.config_path)
 
         # Keybindings
@@ -97,6 +97,9 @@ class Config(object):
         if not self.parser.has_option('colors', 'help'):
             self.parser.set('colors', 'help', '||standout|g5|#8a8')
 
+        if not self.parser.has_option('colors', 'error'):
+            self.parser.set('colors', 'error', '|||#eee|#f00')
+
         if not self.parser.has_option('colors', 'banner'):
             self.parser.set('colors', 'banner', 'black|light gray|standout')
 
@@ -112,8 +115,13 @@ class Config(object):
         if not self.parser.has_option('colors', 'subheading'):
             self.parser.set('colors', 'subheading',
                             '||standout|g3|#dd8')
+        if save:
+            self.save()
 
-        if not os.path.exists(self.config_path):
+    def save(self, overwrite=False):
+        if overwrite:
+            self.parser.write(open(self.config_path, 'w'))
+        elif not os.path.exists(self.config_path):
             self.parser.write(open(self.config_path, 'w'))
 
     def get_palette(self):
@@ -153,3 +161,6 @@ class Config(object):
 
     def get_help_text(self):
         return [x[1] for x in self.parser.items('keybindings') if x[0] == 'show_help'][0]
+
+    def sync_enabled(self):
+        return self.parser.has_section('sync')
