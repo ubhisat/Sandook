@@ -20,6 +20,6 @@ setup(
     author_email='',
     description='Command line todo list',
     scripts=['scripts/sandook', 'scripts/sandook-config'],
-    install_requires=['urwid', 'dropbox'],
+    install_requires=['urwid', 'dropbox', 'argparse'],
 )
 
