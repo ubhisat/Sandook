@@ -2,7 +2,7 @@
 -------------------
 
 
-Sandook is a command line task management utility for linux based systems.
+Sandook is a command line TODO program for linux based systems.
 It can be run under cygwin on windows.
 
 ![Sandook.png](http://dl.dropbox.com/u/153809199/Sandook.png "Sandook Task Manager")
